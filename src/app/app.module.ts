@@ -1,18 +1,36 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
-
+import { FormsModule }   from '@angular/forms';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ClarityModule } from "@clr/angular";
 import { AppComponent } from './app.component';
+import { AuthorizationComponent } from './authorization/authorization.component';
+import { RegistrationComponent } from './registration/registration.component';
+import { ListComponent } from './list/list.component';
+import { NonFoundComponent } from './non-found/non-found.component';
+import { AppRoutingModule } from './app-routing.module';
+import { UserService } from './user.service';
+import { HttpClientModule } from '@angular/common/http';
+
 
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    AuthorizationComponent,
+    RegistrationComponent,
+    ListComponent,
+    NonFoundComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    NgbModule.forRoot(),
+    ClarityModule.forRoot(),
+    FormsModule,
+    HttpClientModule,
+    AppRoutingModule
   ],
-  providers: [],
+  providers: [UserService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
