@@ -26,23 +26,29 @@ regUser: User = {
     
     }
 
-      ngOnInit() {
-        this.getUsers(); 
-        }
-
-      getUsers() : void{
-        this.userService.getUsers()
-        .subscribe((users)=>{
-          this.users = users;
-        });
-      }
+      ngOnInit() { 
+          this.userService.getUsers()
+          .subscribe((users)=>{
+            this.users = users;
+          });
+        };
 
 
     addUser(regUser) : void{
-
-      this.router.navigate(['/']);
-      //check is user already exist
-      //add modal "user added"
-  	}
-
+      this.regUser.id = this.users[this.users.length-1].id + 1;
+      //check is user existed
+       this.userService.findUser(this.regUser.username, this.regUser.password)
+      .subscribe(user=>{
+        if(Object.keys(user).length == 0){  
+         this.userService.addUser(this.regUser as User)
+          .subscribe(a_user => {
+           this.users.push(a_user);
+           this.router.navigate(['/']);
+          });
+         }
+         else{
+           console.log("user already exist");
+         };
+  	});
+  }
 }

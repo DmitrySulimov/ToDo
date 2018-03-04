@@ -37,7 +37,9 @@ export class AuthorizationComponent implements OnInit {
           this.password = ""
         }
         else{
-        this.router.navigate(['list', user[0].id]);
+        let id = user[0].id;
+        sessionStorage.setItem('id', id);
+        this.router.navigate(['/list/', id]);
         }
     });
   }

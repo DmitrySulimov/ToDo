@@ -11,31 +11,35 @@ export class ListGuard implements CanActivate{
 
     username: string = "";
     password: string = "";
-    id: number = 0;
-
-    
-    
+    id: string = "";
+    isValid: boolean = false;
+    authUser: User = {
+    id: 0,
+      username: "",
+      password: ""
+  };
 
 constructor( private router: Router, private userService: UserService,  private route: ActivatedRoute,
-	) {
-  this.id = route.snapshot.params['id'];
-}
+	) {}
 
   canActivate() {
+    this.id = sessionStorage.getItem('id');
     this.username = sessionStorage.getItem('username');
     this.password = sessionStorage.getItem('password');
-    let isValid = false;
     this.userService.findUser(this.username, this.password).subscribe(user => {
-        console.log(typeof user);
-          if(Object.keys(user).length == 0){
-           isValid = false;
+        this.authUser = user[0];});
+
+          if(Object.keys(this.authUser).length == 0){
+           this.isValid = false;
            sessionStorage.clear();
            this.router.navigate(['/']);
           }
-          else if(user[0].id == this.id){
-            isValid = true;
-          }
-    });
-    return isValid;
+          else if(this.authUser.id == parseInt(this.id)){
+            console.log("test");
+            this.isValid = true;
+            console.log(this.isValid);
+          };
+    console.log(this.isValid);
+    return this.isValid;
   }
 }

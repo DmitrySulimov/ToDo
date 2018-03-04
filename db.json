@@ -1,0 +1,61 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "testUser1",
+      "password": "Password"
+    },
+    {
+      "id": 2,
+      "username": "testUser2",
+      "password": "Password"
+    },
+    {
+      "id": 3,
+      "username": "testUser3",
+      "password": "Password"
+    }
+  ],
+  "toDo": [
+    {
+      "id": 1,
+      "checked": false,
+      "whatAreYouDoing": "some comment",
+      "priority": 1,
+      "userId": 1
+    },
+    {
+      "id": 19,
+      "checked": false,
+      "whatAreYouDoing": "test 1",
+      "priority": 1,
+      "userId": "2"
+    },
+    {
+      "id": 20
+    },
+    {
+      "id": 21
+    },
+    {
+      "id": 22
+    },
+    {
+      "id": 23
+    },
+    {
+      "id": 24,
+      "checked": true,
+      "whatAreYouDoing": "bla no ",
+      "priority": "2",
+      "userId": "2"
+    },
+    {
+      "id": 25,
+      "checked": true,
+      "whatAreYouDoing": "zab z",
+      "priority": "5",
+      "userId": "1"
+    }
+  ]
+}
