@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { User } from '../user';
 import {
   Router,
@@ -28,10 +29,16 @@ export class AuthorizationComponent implements OnInit {
   loggining(){
     sessionStorage.setItem('username', this.username);
     sessionStorage.setItem('password', this.password);
-      this.userService.findUser(this.username, this.password)
+    this.userService.findUser(this.username, this.password)
       .subscribe((user)=>{
-      this.userId = user[0].id;
-    this.router.navigate(['list', this.userId]);
+        if(Object.keys(user).length == 0){
+          this.router.navigate(['/']);
+          this.username = "";
+          this.password = ""
+        }
+        else{
+        this.router.navigate(['list', user[0].id]);
+        }
     });
   }
 
