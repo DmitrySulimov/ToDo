@@ -5,16 +5,20 @@
             <div class="login-group">
                 <div class="form-group">
                     <label for="username">Login</label>
-                    <input name="username" class="username" type="text" id="login_username" [(ngModel)]="username" placeholder="Username" required>
-                    <div *ngIf="f.submitted && !username.valid" class="help-block">Invalid</div>
+                    <input name="username" class="username" type="text" id="login_username" [(ngModel)]="username" #username="ngModel" placeholder="Username" required>
+                    <div [hidden]="username.valid || username.untouched" class="alert alert-danger">
+                        Enter correct username
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <input class="password" name="password" type="password" [(ngModel)]="password" id="login_password" placeholder="Password" required>
-                    <div *ngIf="f.submitted && !password.valid" class="help-block">Invalid</div>
+                    <input class="password" name="password" type="password" [(ngModel)]="password #password="ngModel" id="login_password" placeholder="Password" required>
+                    <div [hidden]="password.valid || password.untouched" class="alert alert-danger">
+                        Enter correct password
+                    </div>
                 </div>
-                <button type="submit" class="btn btn-primary btn-block">Sign in</button>
-                <a  [routerLink]="['/registration', username, password]" class="btn btn-link btn-block">Register</a>
+                <button [disabled]="username.invalid || passwoord.invalid"  type="submit" class="btn btn-primary btn-block" >Sign in</button>
+                <a  [routerLink]="['/registration']" class="btn btn-link btn-block">Register</a>
             </div>
         </section>
         </form>

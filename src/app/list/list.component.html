@@ -1,3 +1,41 @@
-<p>
-  list works!
-</p>
+<div class="row inputer">	
+	<label for="inp" class="inp_label">What you gonna do?</label>
+	<input type="text" name="inp" class="input_field offset-md-2 col-md-6" [(ngModel)]="newToDo.whatAreYouDoing">
+	<div class="select col-md-1">
+        <select id="selects_1" class="selector" [(ngModel)]="newToDo.priority">
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+        </select>
+    </div>
+	<button class="col-md-1 btn btn-success-outline add_button" (click)="addItem();">Add</button>
+	<button class="col-md-1 btn btn-danger delete_button" (click)="logOut();">Log Out</button>
+</div>
+<div *ngFor="let think of toDos" class="think row">
+	<div class="col-md-1">
+ 	  <input type="checkbox" class="checkbox" name="checkbox" [(ngModel)]="think.checked"/>
+	</div>
+	<input type="text" name="think" class="col-md-7 think_input" [(ngModel)]="think.whatAreYouDoing">
+	<div class="offset-md-1 col-md-2 buttons">
+		<button class="btn btn-info-outline" (click)="updateItem(think)">
+			Edit
+		</button>
+		<button class="btn btn-danger-outline" (click)="basic = true" (click)="useModal(think)">
+			Delete
+		</button>
+		<clr-modal [(clrModalOpen)]="basic">
+		    <h3 class="modal-title">Delete</h3>
+		    <div class="modal-body">
+		        <p>Do you really want to delete item {{toChange.whatAreYouDoing}}?</p>
+		    </div>
+		    <div class="modal-footer">
+		        <button type="button" class="btn btn-outline" (click)="basic = false">Cancel</button>
+		        <button type="button" class="btn btn-primary" (click)="basic = false" (click)=deleteItem()>
+		        	Ok
+		        </button>
+		    </div>
+		</clr-modal>
+	</div>
+</div>

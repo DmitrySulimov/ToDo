@@ -10,7 +10,10 @@ import { ListComponent } from './list/list.component';
 import { NonFoundComponent } from './non-found/non-found.component';
 import { AppRoutingModule } from './app-routing.module';
 import { UserService } from './user.service';
+import { ListService } from './list.service';
+import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { HttpClientModule } from '@angular/common/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 
@@ -24,13 +27,15 @@ import { HttpClientModule } from '@angular/common/http';
   ],
   imports: [
     BrowserModule,
+    AngularFontAwesomeModule,
+    BrowserAnimationsModule,
     NgbModule.forRoot(),
     ClarityModule.forRoot(),
     FormsModule,
     HttpClientModule,
     AppRoutingModule
   ],
-  providers: [UserService],
+  providers: [UserService, ListService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

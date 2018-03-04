@@ -24,7 +24,7 @@ export class UserService {
 
 	findUser (username: string, password: string): Observable<User>{
 		const url = `${this.userUrl}?username=${username}&password=${password}`;
-		return this.http.get<User>(this.userUrl);
+		return this.http.get<User>(url);
 	}
 
 

@@ -9,22 +9,20 @@ import  {User} from './user';
 @Injectable()
 export class ListGuard implements CanActivate{
 
-
-wantReg: User = {
-		id: 0,
-    username: "testUser1",
-    password: "Password"
-};
+    username: string = "";
+    password: string = "";
+    
 
 constructor( private router: Router, private userService: UserService,  private route: ActivatedRoute,
-	) {}
+	) {
+}
 
   canActivate() {
-  	console.log(this.wantReg);
+    this.username = sessionStorage.getItem('username');
+    this.password = sessionStorage.getItem('password');
     return this.userService.getUsers().map(users => {
-      console.log(this.wantReg);
-            return users.some((user) => user.username === this.wantReg.username
-             && user.password === this.wantReg.password);  
+            return users.some((user) => user.username === this.username
+             && user.password === this.password);  
         });
   }
 }

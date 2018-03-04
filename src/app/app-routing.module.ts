@@ -9,7 +9,7 @@ import { ListGuard } from './list.guard';
 
 const routes : Routes = [
 	{ path: '', component: AuthorizationComponent },
-	{ path: 'list', component: ListComponent, canActivate: [ListGuard] },
+	{ path: 'list/:id', component: ListComponent, canActivate: [ListGuard] },
 	{ path: 'non-found', component: NonFoundComponent },
 	{ path: 'registration', component: RegistrationComponent },
 	{ path: '**', redirectTo: '/non-found', pathMatch: 'full' }

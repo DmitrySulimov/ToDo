@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from '../user';
 import {
-  CanActivate, Router,
+  Router,
   ActivatedRouteSnapshot,
   RouterStateSnapshot
 }                           from '@angular/router';
@@ -16,26 +16,23 @@ import { UserService } from '../user.service';
 })
 export class AuthorizationComponent implements OnInit {
 
-  users : User[];
+  userId: number = 0;
   username: string = "";
   password: string = "";
 
   constructor( private router: Router, private userService: UserService) { }
 
   ngOnInit() {
-    this.getUsers(); 
     }
 
-  getUsers() : void{
-    this.userService.getUsers()
-    .subscribe((users)=>{
-      this.users = users;
-    });
-  }
-
-
   loggining(){
-    this.router.navigate(['list']);
+    sessionStorage.setItem('username', this.username);
+    sessionStorage.setItem('password', this.password);
+      this.userService.findUser(this.username, this.password)
+      .subscribe((user)=>{
+      this.userId = user[0].id;
+    this.router.navigate(['list', this.userId]);
+    });
   }
 
 }
