@@ -35,20 +35,11 @@ regUser: User = {
 
 
     addUser(regUser) : void{
-      this.regUser.id = this.users[this.users.length-1].id + 1;
-      //check is user existed
-       this.userService.findUser(this.regUser.username, this.regUser.password)
-      .subscribe(user=>{
-        if(Object.keys(user).length == 0){  
+      this.regUser.id = this.users[this.users.length].id;
          this.userService.addUser(this.regUser as User)
           .subscribe(a_user => {
            this.users.push(a_user);
            this.router.navigate(['/']);
           });
-         }
-         else{
-           console.log("user already exist");
-         };
-  	});
   }
 }

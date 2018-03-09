@@ -17,9 +17,10 @@ import { UserService } from '../user.service';
 })
 export class AuthorizationComponent implements OnInit {
 
-  userId: number = 0;
+
   username: string = "";
   password: string = "";
+  webtok: string = "";
 
   constructor( private router: Router, private userService: UserService) { }
 
@@ -27,20 +28,15 @@ export class AuthorizationComponent implements OnInit {
     }
 
   loggining(){
-    sessionStorage.setItem('username', this.username);
-    sessionStorage.setItem('password', this.password);
-    this.userService.findUser(this.username, this.password)
-      .subscribe((user)=>{
-        if(Object.keys(user).length == 0){
-          this.router.navigate(['/']);
-          this.username = "";
-          this.password = ""
-        }
-        else{
-        let id = user[0].id;
-        sessionStorage.setItem('id', id);
-        this.router.navigate(['/list/', id]);
-        }
+    this.userService.verifyUser(this.username, this.password)
+      .subscribe((token)=>{
+          this.webtok = token;
+          localStorage.setItem('token', this.webtok);
+          this.userService.findUser(this.username, this.password)
+          .subscribe((user)=>
+          {
+          this.router.navigate(['/list/', user.id]);
+        })
     });
   }
 

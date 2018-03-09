@@ -22,13 +22,21 @@ export class UserService {
  	 return this.http.get<User[]>(this.userUrl);
 	};
 
-	findUser (username: string, password: string): Observable<User>{
-		const url = `${this.userUrl}?username=${username}&password=${password}`;
-		return this.http.get<User>(url);
-	}
-
-	  addUser (user: User): Observable<User> {
+	addUser (user: User): Observable<User> {
 	  return this.http.post<User>(this.userUrl, user, httpOptions);
+	};
+
+
+	 verifyUser (username: string, password: string): Observable<string> {
+	 	const verifyUrl = 'http://localhost:3000/auth/login'
+	 	var body = 'username=' + username + '&password=' + username;
+	  return this.http.post<string>(verifyUrl, body, httpOptions);
+	};
+
+	findUser (username: string, password: string): Observable<User>{
+	 	const findUrl = 'localhost:3000/users/id';
+	 	var body = 'username=' + username + '&password=' + username;
+	  return this.http.post<User>(findUrl, body, httpOptions);
 	};
 
 

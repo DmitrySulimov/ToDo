@@ -35,11 +35,8 @@ constructor( private router: Router, private userService: UserService,  private 
            this.router.navigate(['/']);
           }
           else if(this.authUser.id == parseInt(this.id)){
-            console.log("test");
             this.isValid = true;
-            console.log(this.isValid);
           };
-    console.log(this.isValid);
     return this.isValid;
   }
 }

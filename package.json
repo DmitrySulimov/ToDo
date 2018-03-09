@@ -8,7 +8,9 @@
     "build": "ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "json-server": "json-server --watch ./db.json",
+    "start-auth": "node server.js"
   },
   "private": true,
   "dependencies": {
@@ -27,8 +29,12 @@
     "@ng-bootstrap/ng-bootstrap": "^1.0.0",
     "@webcomponents/custom-elements": "^1.0.0",
     "angular-font-awesome": "^3.1.2",
+    "body-parser": "^1.18.2",
     "core-js": "^2.4.1",
     "font-awesome": "^4.7.0",
+    "json-server": "^0.12.1",
+    "jsonwebtoken": "^8.2.0",
+    "moment": "^2.21.0",
     "rxjs": "^5.5.2",
     "zone.js": "^0.8.14"
   },
