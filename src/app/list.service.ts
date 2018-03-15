@@ -5,33 +5,43 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import {Observable} from 'rxjs/Rx';
 import 'rxjs/Rx';
 
+
+const token = localStorage.getItem('token');
 const httpOptions = {
-	  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+	  headers: new HttpHeaders({
+	   'Content-Type': 'application/json',
+	   'authorization': token
+	    })
 	};
 
 @Injectable()
 export class ListService {
 
- private toDoUrl = 'http://localhost:3000/toDo';
+ private toDoUrl = `http://localhost:3000/auth/tasks`;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
 
-    gettoDo (): Observable<toDo[]> {
- 	 return this.http.get<toDo[]>(this.toDoUrl);
+  }
+
+    gettoDo (id): Observable<toDo[]> {
+  		  const body = {id: id};
+ 		 return this.http.post<toDo[]>(this.toDoUrl, body, httpOptions);
 	};
 
 	addItem(toDo : toDo): Observable<toDo>{
-		return this.http.post<toDo>(this.toDoUrl, toDo, httpOptions);
+		const toDoUrl = `http://localhost:3000/auth/addTask`;
+		return this.http.post<toDo>(toDoUrl, toDo, httpOptions);
 	}
 
-	  deleteItem (toDo: toDo | number): Observable<toDo> {
+	deleteItem (toDo: toDo | number): Observable<toDo> {
 	  const id = typeof toDo === 'number' ? toDo : toDo.id;
-	  const url = `${this.toDoUrl}/${id}`;
-	  return this.http.delete<toDo>(url, httpOptions);
+	  const toDoUrl = `http://localhost:3000/auth/delTask/${id}`;
+	  return this.http.delete<toDo>(toDoUrl, httpOptions);
   };
 
   	updateItem (toDo : toDo): Observable<any> {
-    return this.http.put(this.toDoUrl + '/' + toDo.id, toDo, httpOptions);
+  		const toDoUrl = `http://localhost:3000/auth/changeTask`;
+   		return this.http.put(toDoUrl, toDo, httpOptions);
   }
 
 }

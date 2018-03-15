@@ -28,10 +28,10 @@ export class AuthorizationComponent implements OnInit {
     }
 
   loggining(){
+
     this.userService.verifyUser(this.username, this.password)
       .subscribe((token)=>{
-          this.webtok = token;
-          localStorage.setItem('token', this.webtok);
+          localStorage.setItem('token', token);
           this.userService.findUser(this.username, this.password)
           .subscribe((user)=>
           {

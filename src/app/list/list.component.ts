@@ -15,14 +15,14 @@ import { toDo } from '../toDo';
 export class ListComponent implements OnInit {
 	toDos: toDo[];
 	userId: number = 0;
-  newToDo ={
+  newToDo: toDo ={
     id: 0,
     checked: false,
     whatAreYouDoing: "",
     priority: 1,
     userId: 0
   }
-    toChange ={
+    toChange: toDo ={
     id: 0,
     checked: false,
     whatAreYouDoing: "",
@@ -37,9 +37,11 @@ export class ListComponent implements OnInit {
   	  this.userId = this.route.snapshot.params['id'];
       this.listToDo();
   }
+
+
   listToDo () : void{
-      this.listService.gettoDo().subscribe((toDos)=>{
-      this.toDos = toDos.filter(item => item.userId == this.userId).sort((objA, objB) => objB.priority - objA.priority);
+      this.listService.gettoDo(this.userId).subscribe((toDos)=>{
+      this.toDos = Object.keys(toDos).map(i => toDos[i]).sort((objA, objB) => objB.priority - objA.priority)
       this.newToDo.id = toDos[toDos.length-1].id;
     });
   }
@@ -47,7 +49,7 @@ export class ListComponent implements OnInit {
    addItem() : void{
    this.newToDo.id++;
    this.newToDo.userId = this.userId;
-   this.listService.addItem(this.newToDo as toDo)
+   this.listService.addItem(this.newToDo)
       .subscribe(toDo => {
            this.toDos.push(toDo);
            this.listToDo();
@@ -56,17 +58,18 @@ export class ListComponent implements OnInit {
     }
 
     deleteItem(): void {
-    this.toDos = this.toDos.filter(h => h !== this.toChange);
     this.listService.deleteItem(this.toChange).subscribe();
+    this.listToDo();
   }
 
    updateItem(think: toDo): void {
    this.listService.updateItem(think)
      .subscribe();
+     this.listToDo();
  }
    logOut(){
      this.router.navigate(['/']);
-      sessionStorage.clear();
+      localStorage.clear();
      
    }
 

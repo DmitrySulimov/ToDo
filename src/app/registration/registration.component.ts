@@ -15,31 +15,32 @@ import { UserService } from '../user.service';
 })
 export class RegistrationComponent implements OnInit {
 
-users : User[];
-regUser: User = {
-	id: 0,
-    username: "",
-    password: ""
-  };
+username:string =  "";
+password:string =  "";
+exsited: boolean = false;
 
     constructor( private router: Router, private userService: UserService) { 
     
     }
 
       ngOnInit() { 
-          this.userService.getUsers()
-          .subscribe((users)=>{
-            this.users = users;
-          });
+          
         };
 
 
-    addUser(regUser) : void{
-      this.regUser.id = this.users[this.users.length].id;
-         this.userService.addUser(this.regUser as User)
-          .subscribe(a_user => {
-           this.users.push(a_user);
-           this.router.navigate(['/']);
-          });
-  }
+    addUser(regUser){
+      this.userService.findUser(this.username, this.password)
+          .subscribe(
+            result =>{
+              this.exsited = true;
+             console.log('user existed');
+             this.router.navigate(['/']);
+          },
+            error => {
+             this.userService.addUser(this.username, this.password)
+              .subscribe(a_user => {
+               this.router.navigate(['/']);
+              });
+            }
+  )}
 }

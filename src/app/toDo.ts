@@ -3,4 +3,5 @@ export interface toDo{
 	whatAreYouDoing: string;
 	priority:number;
 	userId:number;
+	checked:boolean;
 }

@@ -1,14 +1,13 @@
 const fs = require('fs')
 const bodyParser = require('body-parser')
-
 const jsonServer = require('json-server')
 const jwt = require('jsonwebtoken')
-const server = jsonServer.create()
 const router = jsonServer.router('./db.json')
+const server = jsonServer.create()
 const db = JSON.parse(fs.readFileSync('./db.json', 'UTF-8'))
 server.use(jsonServer.defaults());
 const SECRET_KEY = 'cAtwa1kkEy';
-const expiresIn = '10h';
+const expiresIn = '1h';
 
 
 server.use(bodyParser.json()); // support json encoded bodies
@@ -26,7 +25,7 @@ function verifyToken(token){
 }
 
 // Check if the user exists in database
-function isAuthenticated({username, password}){
+function isAuthenticated(username, password){
   return db.users.findIndex(user => user.username === username && user.password === password) !== -1
 }
 
@@ -36,15 +35,18 @@ server.post('/users', (req, res) => {
   if (isAuthenticated({username, password}) === false) {
     const lastId = db.users.length + 1;
     const status = 200
-    const message = 'user is added'
+    const message = 'user was added'
+    console.log(typeof db.users)
     db.users.push({"id": lastId,
                    "username": username,
                    "password": password
                     });
+
+    fs.writeFile('./db.json', JSON.stringify(db));
     res.status(status).json({status, message})
     return
   }
-    const status = 401
+    const status = 406
     const message = 'user is already exist'
     res.status(status).json({status, message})
     return
@@ -54,7 +56,8 @@ server.post('/users', (req, res) => {
 server.post('/users/id',  (req, res, next) => {
  const username = req.body.username
  const password = req.body.password
-    if(username == user.username && password == user.password){
+ for (user of db.users){ 
+    if(user.username === username && user.password === password){
     const status = 200
     const message = 'take founded user'
     res.status(status).json(user)
@@ -72,18 +75,6 @@ server.use('/users', (req,res,next) => {
   })
 
 
-server.post('/auth/login', (req, res) => {
-  const {username, password} = req.body
-  if (isAuthenticated({username, password}) === false) {
-    const status = 401
-    const message = 'Incorrect username or password'
-    res.status(status).json({status, message})
-    return
-  }
-  const access_token = createToken({username, password})
-  res.status(200).json({access_token})
-})
-
 server.use(/^(?!\/auth).*$/,  (req, res, next) => {
   if (req.headers.authorization === undefined || req.headers.authorization.split(' ')[0] !== 'Bearer') {
     const status = 401
@@ -98,6 +89,84 @@ server.use(/^(?!\/auth).*$/,  (req, res, next) => {
     const status = 401
     const message = 'Error: access_token is not valid'
     res.status(status).json({status, message})
+  }
+})
+
+server.post('/auth/login', (req, res) => {
+ const username = req.body.username
+ const password = req.body.password
+  if (isAuthenticated(username, password) === false) {
+    const status = 400
+    const message = 'Incorrect username or password'
+    res.status(status).json({status, message})
+    return
+  }
+  const access_token = createToken({username, password})
+  res.status(200).json({access_token})
+})
+
+
+server.post('/auth/addTask', (req, res) => {
+  console.log(req.header('Authorization'));
+    const status = 200
+    const message = 'task was added'
+    db.toDo.push({ id: req.body.id,
+                   checked: req.body.checked,
+                   whatAreYouDoing: req.body.whatAreYouDoing,
+                   priority: req.body.priority,
+                   userId: req.body.userId });
+     fs.writeFile('./db.json', JSON.stringify(db));
+     res.status(status).json({status, message})
+     return
+})
+
+server.delete('/auth/delTask/:id', (req, res) => {
+  const delId = db.toDo.findIndex((todo) => todo.id == req.params.id);
+    if (delId != -1){
+      db.toDo.splice(delId, 1);      
+      const status = 200
+      const message = 'task was deleted'
+      fs.writeFile('./db.json', JSON.stringify(db));
+      res.status(status).json({status, message})
+      return
+    }
+    else{
+      const status = 404
+      const message = 'task not found'
+      res.status(status).json({status, message})
+      return
+    }
+})
+
+server.put('/auth/changeTask', (req, res) => {
+  const changeId = db.toDo.findIndex((todo) => todo.id == req.body.id);
+    if (changeId != -1){
+      db.toDo.splice(changeId, 1, req.body);      
+      const status = 200
+      const message = 'task was updated'
+      fs.writeFile('./db.json', JSON.stringify(db));
+      res.status(status).json({status, message})
+      return
+    }
+    else{
+      const status = 404
+      const message = 'task not found'
+      res.status(status).json({status, message})
+      return
+    }
+})
+
+server.post('/auth/tasks', (req, res) => {
+  const id = db.toDo.findIndex((todo) => todo.userId == req.body.id);
+    if (changeId != -1){
+    res.status(200).json(db.toDo.filter(item => item.userId == id));
+    return
+  }
+  else{
+      const status = 404
+      const message = 'tasks not found'
+      res.status(status).json({status, message})
+      return
   }
 })
 
