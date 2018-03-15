@@ -1,12 +1,16 @@
+body{
+  background-color: #FBF9F9;
+  height: 100vh;
+}
 .inputer{
 	height: 100%;
 	margin-left: 50px;
+  margin-bottom: 30px;
 	padding: 5px;
-
 }
 .think{
     height: 100%;
-    margin: 10px;
+    margin: 10px auto;
     padding: 3px;
     border: solid 1px;
     border-color: blue;
@@ -22,22 +26,28 @@
     width: 30px;
     height: 30px;
 }
-.input_field{
-	padding: 5px;
-	margin: 10px;
+.task_creator{
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .selector{
 	margin: 10px;
 }
-.inp_label{
-	margin: 10px;
-}
 .add_button{
-	margin-left: 10px;
+	margin-left: 37px;
+}
+.show_priority{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: large;
+}
+.show_priotiry span{
+  margin-top: 17px;
 }
 .think_input{
 	margin-top: 16px;
-	margin-right: 10px;
 }
 .buttons{
   display: flex;

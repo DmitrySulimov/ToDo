@@ -1,2 +1,14 @@
+.reg{
+	height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.compact{
+	padding: 10px;
+	border: solid 1px;
+    border-color: blue;
+    border-radius: 10px;
+}
 input.ng-touched.ng-invalid {border:solid red 2px;}
 input.ng-touched.ng-valid {border:solid green 2px;}

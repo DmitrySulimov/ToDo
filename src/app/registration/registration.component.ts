@@ -19,13 +19,9 @@ username:string =  "";
 password:string =  "";
 exsited: boolean = false;
 
-    constructor( private router: Router, private userService: UserService) { 
-    
-    }
+    constructor( private router: Router, private userService: UserService) {}
 
-      ngOnInit() { 
-          
-        };
+      ngOnInit() {};
 
 
     addUser(regUser){
@@ -33,7 +29,6 @@ exsited: boolean = false;
           .subscribe(
             result =>{
               this.exsited = true;
-             console.log('user existed');
              this.router.navigate(['/']);
           },
             error => {

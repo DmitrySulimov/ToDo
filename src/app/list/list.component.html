@@ -1,6 +1,8 @@
-<div class="row inputer">	
-	<label for="inp" class="inp_label">What you gonna do?</label>
-	<input type="text" name="inp" class="input_field offset-md-2 col-md-6" [(ngModel)]="newToDo.whatAreYouDoing">
+<div class="row inputer mx-auto col-md-10">	
+	<div class="task_creator form-control col-md-8">	
+		<label for="inp" class="col-md-3">What you gonna do?</label>
+		<input type="text" name="inp" class="col-md-9" [(ngModel)]="newToDo.whatAreYouDoing">
+	</div>
 	<div class="select col-md-1">
         <select id="selects_1" class="selector" [(ngModel)]="newToDo.priority">
             <option>1</option>
@@ -10,15 +12,20 @@
             <option>5</option>
         </select>
     </div>
-	<button class="col-md-1 btn btn-success-outline add_button" (click)="addItem();">Add</button>
-	<button class="col-md-1 btn btn-danger delete_button" (click)="logOut();">Log Out</button>
+    <div class="col-md-3">    	
+		<button class="btn btn-success-outline add_button" (click)="addItem();">Add</button>
+		<button class="btn btn-danger delete_button" (click)="logOut();">Out</button>
+    </div>
 </div>
-<div *ngFor="let think of toDos" class="think row">
+<div *ngFor="let think of toDos" class="think row col-md-10">
 	<div class="col-md-1">
  	  <input type="checkbox" class="checkbox" name="checkbox" [(ngModel)]="think.checked"/>
 	</div>
-	<input type="text" name="think" class="col-md-7 think_input" [(ngModel)]="think.whatAreYouDoing">
-	<div class="offset-md-1 col-md-2 buttons">
+	<input type="text" name="think" class="col-md-7 think_input" [(ngModel)]="think.whatAreYouDoing"/>
+	<div class="col-md-1 show_priority">
+		<span name="priority" class="">{{think.priority}}</span> 
+	</div>
+	<div class="col-md-3 buttons">
 		<button class="btn btn-info-outline" (click)="updateItem(think)">
 			Edit
 		</button>

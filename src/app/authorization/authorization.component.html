@@ -1,7 +1,7 @@
-<div class="row">
+<div class="row auth m-0">
     <div class="col-md-4 offset-md-4">
+        <h4>Authorization</h4>
         <form class="compact" (ngSubmit)="loggining()" #f="ngForm" novalidate>
-            <section class="form-block">
                 <div class="login-group">
                     <div class="form-group">
                         <label for="username">Login</label>
@@ -14,9 +14,8 @@
                     <button [disabled]="f.invalid"  type="submit" class="btn btn-primary btn-block" >
                         Sign in
                     </button>
-                    <a  [routerLink]="['/registration']" class="btn btn-link btn-block">Register</a>
+                    <a [routerLink]="['/registration']" class="btn btn-link btn-block">Register</a>
                 </div>
-            </section>
         </form>
     </div> 
 </div>

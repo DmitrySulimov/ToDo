@@ -46,7 +46,7 @@ server.post('/users', (req, res) => {
     res.status(status).json({status, message})
     return
   }
-    const status = 406
+    const status = 200
     const message = 'user is already exist'
     res.status(status).json({status, message})
     return
@@ -75,8 +75,21 @@ server.use('/users', (req,res,next) => {
   })
 
 
-server.use(/^(?!\/auth).*$/,  (req, res, next) => {
-  if (req.headers.authorization === undefined || req.headers.authorization.split(' ')[0] !== 'Bearer') {
+server.post('/auth/login', (req, res) => {
+ const username = req.body.username
+ const password = req.body.password
+  if (isAuthenticated(username, password) === false) {
+    const status = 200
+    const message = 'Incorrect username or password'
+    res.status(status).json({status, message})
+    return
+  }
+  const access_token = createToken({username, password})
+  res.status(200).json({access_token})
+})
+
+server.use(/^\/auth.*$/,  (req, res, next) => {
+  if (req.headers.authorization === undefined){
     const status = 401
     const message = 'Bad authorization header'
     res.status(status).json({status, message})
@@ -91,20 +104,6 @@ server.use(/^(?!\/auth).*$/,  (req, res, next) => {
     res.status(status).json({status, message})
   }
 })
-
-server.post('/auth/login', (req, res) => {
- const username = req.body.username
- const password = req.body.password
-  if (isAuthenticated(username, password) === false) {
-    const status = 400
-    const message = 'Incorrect username or password'
-    res.status(status).json({status, message})
-    return
-  }
-  const access_token = createToken({username, password})
-  res.status(200).json({access_token})
-})
-
 
 server.post('/auth/addTask', (req, res) => {
   console.log(req.header('Authorization'));
@@ -131,7 +130,7 @@ server.delete('/auth/delTask/:id', (req, res) => {
       return
     }
     else{
-      const status = 404
+      const status = 200
       const message = 'task not found'
       res.status(status).json({status, message})
       return
@@ -149,7 +148,7 @@ server.put('/auth/changeTask', (req, res) => {
       return
     }
     else{
-      const status = 404
+      const status = 200
       const message = 'task not found'
       res.status(status).json({status, message})
       return
@@ -157,17 +156,15 @@ server.put('/auth/changeTask', (req, res) => {
 })
 
 server.post('/auth/tasks', (req, res) => {
-  const id = db.toDo.findIndex((todo) => todo.userId == req.body.id);
-    if (changeId != -1){
-    res.status(200).json(db.toDo.filter(item => item.userId == id));
-    return
-  }
-  else{
-      const status = 404
-      const message = 'tasks not found'
+  const id = req.body.id;
+  if ((db.toDo.filter(item => item.userId == id)) == []) {
+      const status = 200
+      const message = 'task list is empty'
       res.status(status).json({status, message})
       return
   }
+    res.status(200).json(db.toDo.filter(item => item.userId == id));
+    return
 })
 
 server.use(router)

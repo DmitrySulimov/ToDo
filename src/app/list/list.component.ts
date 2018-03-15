@@ -42,7 +42,9 @@ export class ListComponent implements OnInit {
   listToDo () : void{
       this.listService.gettoDo(this.userId).subscribe((toDos)=>{
       this.toDos = Object.keys(toDos).map(i => toDos[i]).sort((objA, objB) => objB.priority - objA.priority)
+      if(this.toDos.length != 0){
       this.newToDo.id = toDos[toDos.length-1].id;
+      }
     });
   }
 
